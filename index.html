@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css">  -->
+  </head>
+  <body>
+    <data-hashsnap project-uid="" max-image-width="1080" accept="image/*"></data-hashsnap>
+    <page-route name="intro" id="page-intro" click-goto="main">
+      <section>
+        <h1>시작하기</h1>
+      </section>
+    </page-route>
+    <page-route name="main" id="page-main">
+      <section>
+        <h1>하고 싶은 메시지를 남겨주세요 !</h1>
+        <div class="canvas-container">
+          <canvas id="canvas"></canvas>
+        </div>
+        <input 
+          type="text"
+          id="message"
+          spellcheck="false" 
+          maxlength="30"
+          placeholder="여기에 입력해 주세요 :)"
+        />
+        <button id="complete-btn">남기기</button>
+      </section>
+    </page-route>
+    <page-route name="ending" id="page-ending">
+      <section>
+        <h1>참여해주셔서 감사합니다.</h1>
+        <div class="canvas-container">
+          <canvas id="canvas-preview"></canvas>
+        </div>
+      </section>
+    </page-route>
+
+    <popup-route name="popup-error" id="popup-error">
+      <h1>Error!</h1>
+    </popup-route>
+    <popup-route name="popup-warn" id="popup-warn">
+      <h1>메시지를 입력해주세요!</h1>
+    </popup-route>
+    <popup-route name="popup-loding" id="popup-loding">
+      <h1>로딩중...</h1>
+    </popup-route>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
