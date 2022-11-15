@@ -17,7 +17,8 @@ body {
 }
 input,
 select,
-button {
+button,
+textarea {
   display: block;
   font-size: 13px;
   text-align: center;
@@ -34,6 +35,12 @@ button {
 }
 data-hashsnap {
   display: none;
+}
+textarea {
+  width: 100%;
+  resize: none;
+  font-size: 15px;
+  background: #f8f8f8;
 }
 page-route {
   width: 100%;
@@ -79,13 +86,13 @@ h1 {
 #page-ending .canvas-container {
   width: 450px;
   position: relative;
-  border: 1px solid #393E46;
-  background: #fff;
 }
 #page-main canvas,
 #page-ending canvas {
   width: 100%;
   vertical-align: top;
+  background: #fff;
+  border: 1px solid #393E46;
 }
 #page-ending .canvas-container {
   border: 3px solid #FFD369;
