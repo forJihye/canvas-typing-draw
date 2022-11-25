@@ -44,7 +44,7 @@ const main = async () => { try {
     pos: { x: 0, y: 0 },
     size: { w: 1080, h: 500 },
     font: { size: 52, lineHeight: 30 },
-    debug: false,
+    debug: true,
     align: 'center',
     vAlign: 'middle',
     justify: false,
@@ -57,17 +57,15 @@ const main = async () => { try {
     ev.preventDefault();
     const value = (ev.target as HTMLInputElement).value;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    
     canvasTxt.font = "'Poor Story'";
     canvasTxt.fontSize = 72;
     canvasTxt.debug = config.debug;
     canvasTxt.align = config.align;
     canvasTxt.vAlign = config.vAlign;
     canvasTxt.justify = config.justify;
-    canvasTxt.drawText(ctx, value, 0, 0, canvas.width, canvas.height)
-    pctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
-    // console.log(`Total height = ${height}`)
+    canvasTxt.drawText(ctx, value, 0, 0, canvas.width, canvas.height);
+    // pctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
     // pctx.clearRect(0, 0, canvas.width, canvas.height);
     // ctx.fillStyle = 'transparent';
@@ -80,6 +78,7 @@ const main = async () => { try {
   textareaEl.addEventListener('input', handlerInput);
 
   completeBtn.addEventListener('click', async () => {
+    return;
     if (!textareaEl.value.length) {
       popupRouter.push('popup-warn'); 
       await sleep(1500);

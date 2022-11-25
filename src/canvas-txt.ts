@@ -68,8 +68,8 @@ const canvasTxt = {
     temptextarray.forEach((txtt) => {
       let textwidth = ctx.measureText(txtt).width
       if (textwidth <= width) {
-        textarray.push(txtt)
-      } else {
+        textarray.length < this.maxLine && textarray.push(txtt)
+      } else { // 입력 텍스트가 전체 width 보다 넘쳐날 때
         let temptext = txtt
         let linelen = width
         let textlen
@@ -106,10 +106,10 @@ const canvasTxt = {
 
           temptext = temptext.substring(textlen)
           textwidth = ctx.measureText(temptext).width
-          textarray.push(texttoprint)
+          textarray.length < this.maxLine && textarray.push(texttoprint)
         }
         if (textwidth > 0) {
-          textarray.push(temptext)
+          textarray.length < this.maxLine && textarray.push(temptext)
         }
       }
       // end foreach temptextarray
@@ -132,8 +132,9 @@ const canvasTxt = {
       debugY = y + height / 2
       txtY -= negoffset
     }
+    
     //print all lines of text
-    textarray.slice(0, this.maxLine).forEach((txtline) => {
+    textarray.forEach((txtline) => {
       txtline = txtline.trim();
       ctx.fillText(txtline, textanchor, txtY);
       txtY += charHeight;
