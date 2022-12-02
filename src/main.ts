@@ -29,56 +29,68 @@ const START_ROUTE = 'intro';
 
 const main = async () => { try {
   let PROJECT_UID = '';
-  let MAX_IMAGE_WIDTH = 0;
   const dataSetting = $('data-hashsnap') as HTMLElement;
   PROJECT_UID = dataSetting.getAttribute('project-uid') as string;
-  MAX_IMAGE_WIDTH = Number(dataSetting.getAttribute('max-image-width')) ?? 1080;
   dataSetting.parentElement?.removeChild(dataSetting);
 
-  canvas.width = pcanvas.width = MAX_IMAGE_WIDTH;
-  canvas.height = pcanvas.height = 500;
-  canvas.style.aspectRatio = pcanvas.style.aspectRatio = `auto ${MAX_IMAGE_WIDTH} / 300`;
+  const img_width = 615;
+  const img_height = 220;
+  canvas.width = pcanvas.width = img_width;
+  canvas.height = pcanvas.height = img_height;
+  canvas.style.aspectRatio = pcanvas.style.aspectRatio = `auto ${img_width} / 300`;
   
   const config = {
-    text: '',
-    pos: { x: 0, y: 0 },
-    size: { w: 1080, h: 500 },
-    font: { size: 52, lineHeight: 30 },
-    debug: true,
+    debug: false,
     align: 'center',
-    vAlign: 'middle',
+    vAlign: 'top',
+    fontSize: 72,
+    fontWeight: '',
+    fontStyle: '',
+    fontVariant: '',
+    font: 'Poor Story',
+    lineHeight: 90,
     justify: false,
-    min: 0,
-    max: 800,
-    maxLine: 5
+    maxLine: 2
   }
+  
+  canvasTxt.font = config.font;
+  canvasTxt.fontSize = config.fontSize;
+  canvasTxt.debug = config.debug;
+  canvasTxt.align = config.align;
+  canvasTxt.vAlign = config.vAlign;
+  canvasTxt.justify = config.justify;
 
-  const handlerInput = (ev: Event) => {
+  // const lines = value.split("\n");
+  // const space = 10;
+  // for (let i = 0; i < lines.length; i++) {
+  //   if (lines[i].length <= space) continue;
+  //   lines[i + 1] = lines[i].substring(space + 1) + (lines[i + 1] || "");
+  //   lines[i] = lines[i].substring(0, space);
+  // }
+  // textareaEl.value = lines.slice(0, space).join("\n");
+  // const char_limit_pre_line = 10;
+  // const lines_limit = 2;
+  const handlerInput = (ev: any) => {
     ev.preventDefault();
-    const value = (ev.target as HTMLInputElement).value;
+    const target = ev.target as HTMLTextAreaElement;
+    // const lines = target.value.split('\n');
+    // if (ev.data === null) {} 
+    // else {
+    //   for (let i = 0; i < lines.length; i++) {
+    //     if (lines[i].length < char_limit_pre_line) continue;
+    //     lines[i] = lines[i].substring(0, char_limit_pre_line);
+    //     lines[i + 1] = lines[i].substring(char_limit_pre_line + 1) + (lines[i + 1] || "");
+    //   }
+    //   textareaEl.value = lines.slice(0, lines_limit).join("\n");
+    // }
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    canvasTxt.font = "'Poor Story'";
-    canvasTxt.fontSize = 72;
-    canvasTxt.debug = config.debug;
-    canvasTxt.align = config.align;
-    canvasTxt.vAlign = config.vAlign;
-    canvasTxt.justify = config.justify;
-    canvasTxt.drawText(ctx, value, 0, 0, canvas.width, canvas.height);
-    // pctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // pctx.clearRect(0, 0, canvas.width, canvas.height);
-    // ctx.fillStyle = 'transparent';
-    // ctx.fillRect(0, 0, canvas.width, canvas.height);
-    // ctx.font = '48px Poor Story';
-    // ctx.textAlign = 'center';
-    // ctx.fillStyle = '#000';
-    // ctx.fillText(value, canvas.width/2, canvas.height/2 + 24);
+    pctx.clearRect(0, 0, canvas.width, canvas.height);
+    canvasTxt.drawText(ctx, target.value, 0, (canvas.height-180)/2, canvas.width, canvas.height);
+    pctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
   }
   textareaEl.addEventListener('input', handlerInput);
 
   completeBtn.addEventListener('click', async () => {
-    return;
     if (!textareaEl.value.length) {
       popupRouter.push('popup-warn'); 
       await sleep(1500);

@@ -5,14 +5,14 @@ const canvasTxt = {
   debug: false,
   align: 'center',
   vAlign: 'middle',
-  fontSize: 14,
+  fontSize: 72,
   fontWeight: '',
   fontStyle: '',
   fontVariant: '',
   font: 'Arial',
   lineHeight: 90,
   justify: false,
-  maxLine: 5,
+  maxLine: 2,
   /**
    *
    * @param {CanvasRenderingContext2D} ctx
