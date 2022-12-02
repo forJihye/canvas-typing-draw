@@ -17,7 +17,9 @@ const file2FormData = (params: {[key: string]: any}) => new Promise(res => {
   res(fd);
 });
 
-const textareaEl = document.getElementById('message') as HTMLTextAreaElement;
+// const textareaEl = document.getElementById('message') as HTMLTextAreaElement;
+const firstInput = document.getElementById("first-line") as HTMLInputElement;
+const secondInput = document.getElementById("second-line") as HTMLInputElement;
 const completeBtn = document.getElementById('complete-btn') as HTMLButtonElement;
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
@@ -70,9 +72,9 @@ const main = async () => { try {
   // textareaEl.value = lines.slice(0, space).join("\n");
   // const char_limit_pre_line = 10;
   // const lines_limit = 2;
-  const handlerInput = (ev: any) => {
-    ev.preventDefault();
-    const target = ev.target as HTMLTextAreaElement;
+  // const handlerInput = (ev: any) => {
+  //   ev.preventDefault();
+  //   const target = ev.target as HTMLTextAreaElement;
     // const lines = target.value.split('\n');
     // if (ev.data === null) {} 
     // else {
@@ -83,19 +85,43 @@ const main = async () => { try {
     //   }
     //   textareaEl.value = lines.slice(0, lines_limit).join("\n");
     // }
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pctx.clearRect(0, 0, canvas.width, canvas.height);
-    canvasTxt.drawText(ctx, target.value, 0, (canvas.height-180)/2, canvas.width, canvas.height);
-    pctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
-  }
-  textareaEl.addEventListener('input', handlerInput);
+  //   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //   pctx.clearRect(0, 0, canvas.width, canvas.height);
+  //   canvasTxt.drawText(ctx, target.value, 0, (canvas.height-180)/2, canvas.width, canvas.height);
+  //   pctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+  // }
+  // textareaEl.addEventListener('input', handlerInput);
+
+  firstInput.addEventListener('input', (ev: Event) => {
+    ev.preventDefault()
+    const target = ev.target as HTMLInputElement;
+    ctx.clearRect(0, 0, canvas.width, 110);
+    ctx.font = '72px Poor Story';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#000';
+    ctx.fillText(target.value, canvas.width/2, 72 + 20);
+    // ctx.fillStyle = 'yellow';
+    // ctx.fillRect(0, 0, canvas.width, 110)
+  })
+  secondInput.addEventListener('input', (ev: Event) => {
+    ev.preventDefault()
+    const target = ev.target as HTMLInputElement;
+    ctx.clearRect(0, 110, canvas.width, 110);
+    ctx.font = '72px Poor Story';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#000';
+    ctx.fillText(target.value, canvas.width/2, 72 + 72 + 30);
+    // ctx.fillStyle = 'yellow';
+    // ctx.fillRect(0, 110, canvas.width, 110)
+  })
 
   completeBtn.addEventListener('click', async () => {
-    if (!textareaEl.value.length) {
-      popupRouter.push('popup-warn'); 
-      await sleep(1500);
-      popupRouter.hide();
-    } else {
+    return;
+    // if (!textareaEl.value.length) {
+    //   popupRouter.push('popup-warn'); 
+    //   await sleep(1500);
+    //   popupRouter.hide();
+    // } else {
       popupRouter.push('popup-loding');
       try {
         const blob = await canvas2Blob(canvas, {type: 'image/png', quality: 1}) as Blob;
@@ -119,8 +145,8 @@ const main = async () => { try {
       }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       pctx.clearRect(0, 0, canvas.width, canvas.height);
-      textareaEl.value = '';
-    }
+    //   textareaEl.value = '';
+    // }
   });
 
   const clickGoto = Array.from($$('[click-goto]')) as HTMLElement[];
