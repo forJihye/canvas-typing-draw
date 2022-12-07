@@ -75,19 +75,19 @@ const canvasTxt = {
         let textlen
         let textpixlen
         let texttoprint
-        textwidth = ctx.measureText(temptext).width
+        textwidth = ctx.measureText(temptext).width;
         while (textwidth > linelen) {
           textlen = 0
           textpixlen = 0
           texttoprint = ''
           while (textpixlen < linelen) {
-            textlen++
-            texttoprint = temptext.substring(0, textlen)
-            textpixlen = ctx.measureText(temptext.substring(0, textlen)).width
+            textlen++;
+            texttoprint = temptext.substring(0, textlen);
+            textpixlen = ctx.measureText(temptext.substring(0, textlen)).width;
           }
           // Remove last character that was out of the box
-          textlen--
-          texttoprint = texttoprint.substring(0, textlen)
+          textlen--;
+          texttoprint = texttoprint.substring(0, textlen);
           //if statement ensures a new line only happens at a space, and not amidst a word
           const backup = textlen
           if (temptext.substring(textlen, 1) != ' ') {
@@ -100,9 +100,7 @@ const canvasTxt = {
             texttoprint = temptext.substring(0, textlen)
           }
 
-          texttoprint = this.justify
-            ? this.justifyLine(ctx, texttoprint, spaceWidth, SPACE, width)
-            : texttoprint
+          texttoprint = this.justify ? this.justifyLine(ctx, texttoprint, spaceWidth, SPACE, width) : texttoprint
 
           temptext = temptext.substring(textlen)
           textwidth = ctx.measureText(temptext).width
@@ -110,6 +108,7 @@ const canvasTxt = {
         }
         if (textwidth > 0) {
           textarray.length < this.maxLine && textarray.push(temptext)
+          
         }
       }
       // end foreach temptextarray

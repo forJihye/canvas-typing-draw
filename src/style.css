@@ -39,6 +39,7 @@ data-hashsnap {
 textarea {
   width: 100%;
   resize: none;
+  text-align: center;
   font-size: 22px;
   padding-top: 20px;
   padding-bottom: 20px;
