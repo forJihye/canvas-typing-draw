@@ -21,6 +21,7 @@ const textareaEl = $('#message') as HTMLTextAreaElement;
 const completeBtn = $('#complete-btn') as HTMLButtonElement;
 const feedback = $('.feedback') as HTMLDivElement
 const messageCount = $('#length') as HTMLSpanElement;
+
 const START_ROUTE = 'intro';
 
 const main = async () => { try {
@@ -30,6 +31,7 @@ const main = async () => { try {
   // PROJECT_UID = dataSetting.getAttribute('project-uid') as string;
   // dataSetting.parentElement?.removeChild(dataSetting);
   let flag = false;
+  messageCount.innerText = '0';
   const handlerInput = (ev: any) => {
     ev.preventDefault();
     const target = ev.target as HTMLTextAreaElement;
