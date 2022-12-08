@@ -20,7 +20,7 @@ const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 const textareaEl = $('#message') as HTMLTextAreaElement;
 const completeBtn = $('#complete-btn') as HTMLButtonElement;
 const feedback = $('.feedback') as HTMLDivElement
-const messageCount = $('#length') as HTMLSpanElement;
+// const messageCount = $('#length') as HTMLSpanElement;
 
 const START_ROUTE = 'intro';
 
@@ -31,19 +31,19 @@ const main = async () => { try {
   // PROJECT_UID = dataSetting.getAttribute('project-uid') as string;
   // dataSetting.parentElement?.removeChild(dataSetting);
   let flag = false;
-  messageCount.innerText = '0';
+  // messageCount.innerText = '0';
   const handlerInput = (ev: any) => {
     ev.preventDefault();
     const target = ev.target as HTMLTextAreaElement;
+    const height = target.scrollHeight;
     feedback.style.visibility = 'hidden';
     feedback.innerText = '';
-    
+    // const length = lines.join('').length;
+    // messageCount.innerText = String(length);
     const lines = target.value.split('\n');
-    const length = lines.join('').length;
-    messageCount.innerText = String(length);
-
-    if (lines.length > 2 || length > 20) {
+    if (height > 100 || lines.length > 2 || target.value.length > 20) {
       flag = true;
+      target.value = target.value.substring(0, 20);
       feedback.style.visibility = 'visible';
       feedback.innerText = '최대 2줄 / 20자 내외로 입력 가능합니다';
     } else {
