@@ -44,10 +44,6 @@ const main = async () => { try {
     feedback.innerText = '';
     feedback.style.visibility = 'hidden';
     
-    const lines = target.value.split('\n')
-    const length = lines.join('').length;
-    messageCount.innerText = String(length);
-
     const height = target.scrollHeight;
     if (height > 100) {
       flag = true;
@@ -62,6 +58,10 @@ const main = async () => { try {
     } else {
       flag = false;
     }
+    
+    const lines = target.value.split('\n');
+    const length = lines.join('').length;
+    messageCount.innerText = String(length)
   }
   // textareaEl.value = '여기에 입력해 주세요.\n(2줄 / 20자 내외)';d
   // textareaEl.addEventListener('focus', (ev ) => {
