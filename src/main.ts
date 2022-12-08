@@ -3,10 +3,8 @@ import Router from './router';
 import {singleListener} from './single-listener';
 import canvasTxt from './canvas-txt';
 // import axios from 'axios';
-
 const $$ = document.querySelectorAll.bind(document);
 const $ = document.querySelector.bind(document);
-
 // const rest = (index: number, total: number) => (total + index % total) % total;
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 // const canvas2Blob = (canvas: HTMLCanvasElement, options: {type: string; quality: number}) => new Promise(res => canvas.toBlob(res, options.type, options.quality));
@@ -16,11 +14,19 @@ const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
 //   for (const name in params) fd.append(name, params[name])
 //   res(fd);
 // });
-
+// for (let i = 0; i < lines.length; i++) {
+//   count += lines[i].length;
+//   if (count > 20) {
+//     const slice = 20 - (count - lines[i].length);
+//     lines[i] = lines[i].substring(0, slice);
+//     console.log(lines[i])
+//   }
+// }
+// target.value = lines.slice(0, 2).join('\n')
 const textareaEl = $('#message') as HTMLTextAreaElement;
 const completeBtn = $('#complete-btn') as HTMLButtonElement;
 const feedback = $('.feedback') as HTMLDivElement
-// const messageCount = $('#length') as HTMLSpanElement;
+const messageCount = $('#length') as HTMLSpanElement;
 
 const START_ROUTE = 'intro';
 
@@ -30,22 +36,29 @@ const main = async () => { try {
   // const dataSetting = $('data-hashsnap') as HTMLElement;
   // PROJECT_UID = dataSetting.getAttribute('project-uid') as string;
   // dataSetting.parentElement?.removeChild(dataSetting);
+  messageCount.innerText = '0';
   let flag = false;
-  // messageCount.innerText = '0';
   const handlerInput = (ev: any) => {
     ev.preventDefault();
     const target = ev.target as HTMLTextAreaElement;
-    const height = target.scrollHeight;
-    feedback.style.visibility = 'hidden';
     feedback.innerText = '';
-    // const length = lines.join('').length;
-    // messageCount.innerText = String(length);
-    const lines = target.value.split('\n');
-    if (height > 100 || lines.length > 2 || target.value.length > 20) {
+    feedback.style.visibility = 'hidden';
+    
+    const lines = target.value.split('\n')
+    const length = lines.join('').length;
+    messageCount.innerText = String(length);
+
+    const height = target.scrollHeight;
+    if (height > 100) {
       flag = true;
-      target.value = target.value.substring(0, 20);
       feedback.style.visibility = 'visible';
       feedback.innerText = '최대 2줄 / 20자 내외로 입력 가능합니다';
+      target.value = target.value.substring(0, target.value.length - 1);
+    } else if (target.value.length > 20) {
+      flag = true;
+      feedback.style.visibility = 'visible';
+      feedback.innerText = '최대 2줄 / 20자 내외로 입력 가능합니다';
+      target.value = target.value.substring(0, 20);
     } else {
       flag = false;
     }
@@ -57,7 +70,7 @@ const main = async () => { try {
   //   target.value = '';
   // });
   textareaEl.addEventListener('input', handlerInput);
-  
+
   const config = {
     debug: false,
     align: 'left',
