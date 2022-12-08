@@ -1,81 +1,87 @@
-import './style.css';
+// import './style.css';
 import Router from './router';
 import {singleListener} from './single-listener';
-import axios from 'axios';
 import canvasTxt from './canvas-txt';
+// import axios from 'axios';
 
 const $$ = document.querySelectorAll.bind(document);
 const $ = document.querySelector.bind(document);
 
 // const rest = (index: number, total: number) => (total + index % total) % total;
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
-const canvas2Blob = (canvas: HTMLCanvasElement, options: {type: string; quality: number}) => new Promise(res => canvas.toBlob(res, options.type, options.quality));
-const blob2File = (blob: Blob, options: {name: string; type: string; }) =>  new Promise(res => res(new File([blob], options.name, {type: options.type, lastModified: Date.now()})));
-const file2FormData = (params: {[key: string]: any}) => new Promise(res => {
-  const fd = new FormData();
-  for (const name in params) fd.append(name, params[name])
-  res(fd);
-});
+// const canvas2Blob = (canvas: HTMLCanvasElement, options: {type: string; quality: number}) => new Promise(res => canvas.toBlob(res, options.type, options.quality));
+// const blob2File = (blob: Blob, options: {name: string; type: string; }) =>  new Promise(res => res(new File([blob], options.name, {type: options.type, lastModified: Date.now()})));
+// const file2FormData = (params: {[key: string]: any}) => new Promise(res => {
+//   const fd = new FormData();
+//   for (const name in params) fd.append(name, params[name])
+//   res(fd);
+// });
 
-const textareaEl = document.getElementById('message') as HTMLTextAreaElement;
-const firstInput = document.getElementById("first-line") as HTMLInputElement;
-const secondInput = document.getElementById("second-line") as HTMLInputElement;
-firstInput.style.display = 'none';
-secondInput.style.display = 'none';
-const completeBtn = document.getElementById('complete-btn') as HTMLButtonElement;
-const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-const pcanvas = document.getElementById('canvas-preview') as HTMLCanvasElement;
-const pctx = pcanvas.getContext('2d') as CanvasRenderingContext2D;
-
-const API_POST_UPLOAD = 'https://api.hashsnap.net/posts/upload';
+const textareaEl = $('#message') as HTMLTextAreaElement;
+const completeBtn = $('#complete-btn') as HTMLButtonElement;
+const feedback = $('.feedback') as HTMLDivElement
+const messageCount = $('#length') as HTMLSpanElement;
 const START_ROUTE = 'intro';
 
 const main = async () => { try {
-  let PROJECT_UID = '';
-  const dataSetting = $('data-hashsnap') as HTMLElement;
-  PROJECT_UID = dataSetting.getAttribute('project-uid') as string;
-  dataSetting.parentElement?.removeChild(dataSetting);
-
-  const img_width = 620;
-  const img_height = 220;
-  canvas.width = pcanvas.width = img_width;
-  canvas.height = pcanvas.height = img_height;
-  canvas.style.aspectRatio = pcanvas.style.aspectRatio = `auto ${img_width} / 300`;
-  
-  const config = {
-    debug: false,
-    align: 'center',
-    vAlign: 'top',
-    fontSize: 72,
-    fontWeight: '',
-    fontStyle: '',
-    fontVariant: '',
-    font: 'Poor Story',
-    lineHeight: 90,
-    justify: false,
-    maxLine: 2
-  }
-  
-  canvasTxt.font = config.font;
-  canvasTxt.fontSize = config.fontSize;
-  canvasTxt.debug = config.debug;
-  canvasTxt.align = config.align;
-  canvasTxt.vAlign = config.vAlign;
-  canvasTxt.justify = config.justify;
-
+  // let PROJECT_UID = '';
+  // const API_POST_UPLOAD = 'https://api.hashsnap.net/posts/upload';
+  // const dataSetting = $('data-hashsnap') as HTMLElement;
+  // PROJECT_UID = dataSetting.getAttribute('project-uid') as string;
+  // dataSetting.parentElement?.removeChild(dataSetting);
+  let flag = false;
   const handlerInput = (ev: any) => {
     ev.preventDefault();
     const target = ev.target as HTMLTextAreaElement;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pctx.clearRect(0, 0, canvas.width, canvas.height);
-    canvasTxt.drawText(ctx, target.value, 0, (canvas.height - 180) / 2, canvas.width, canvas.height);
-    pctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+    feedback.style.visibility = 'hidden';
+    feedback.innerText = '';
+    
+    const lines = target.value.split('\n');
+    const length = lines.join('').length;
+    messageCount.innerText = String(length);
+
+    if (lines.length > 2 || length > 20) {
+      flag = true;
+      feedback.style.visibility = 'visible';
+      feedback.innerText = '최대 2줄 / 20자 내외로 입력 가능합니다';
+    } else {
+      flag = false;
+    }
   }
+  // textareaEl.value = '여기에 입력해 주세요.\n(2줄 / 20자 내외)';d
+  // textareaEl.addEventListener('focus', (ev ) => {
+  //   ev.preventDefault();
+  //   const target = ev.target as HTMLTextAreaElement;
+  //   target.value = '';
+  // });
   textareaEl.addEventListener('input', handlerInput);
+  
+  const config = {
+    debug: false,
+    align: 'left',
+    vAlign: 'middle',
+    fontSize: 42,
+    fontWeight: '900',
+    fontStyle: '',
+    fontVariant: '',
+    font: 'Hyundai Sans Text',
+    lineHeight: 50,
+    justify: false,
+  }
+  canvasTxt.align = config.align;
+  canvasTxt.font = config.font;
+  canvasTxt.fontSize = config.fontSize;
+  canvasTxt.fontWeight = config.fontWeight;
+  canvasTxt.lineHeight = config.lineHeight;
+
+  const pcanvas = document.getElementById('preview') as HTMLCanvasElement;
+  const pctx = pcanvas.getContext('2d') as CanvasRenderingContext2D;
+
+  const canvas = document.createElement('canvas') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
   completeBtn.addEventListener('click', async () => {
-    return
+    if (flag) return;
     if (!textareaEl.value.length) {
       popupRouter.push('popup-warn'); 
       await sleep(1500);
@@ -83,27 +89,36 @@ const main = async () => { try {
     } else {
       popupRouter.push('popup-loding');
       try {
-        const blob = await canvas2Blob(canvas, {type: 'image/png', quality: 1}) as Blob;
-        const file = await blob2File(blob, {name: 'photo.png', type: 'image/png'}) as File;
-        const fd = await file2FormData({
-          image: file,
-          resolver: 'moderation'
-        }) as FormData;
-        await axios.post(`${API_POST_UPLOAD}/${PROJECT_UID}`, fd, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
+        const rect = textareaEl.getBoundingClientRect() as DOMRect;
+        const width = Math.floor(rect.width);
+        const height = Math.floor(rect.height);
+        canvas.width = pcanvas.width = width;
+        canvas.height = pcanvas.height = height;
+        canvasTxt.drawText(ctx, textareaEl.value, 0, -8, width, height);
+        
+        pctx.fillStyle = '#fff';
+        pctx.fillRect(0, 0, width, height);
+        pctx.drawImage(canvas, 0, 0)
+        // const blob = await canvas2Blob(canvas, {type: 'image/png', quality: 1}) as Blob;
+        // const file = await blob2File(blob, {name: 'photo.png', type: 'image/png'}) as File;
+        // const fd = await file2FormData({
+        //   image: file,
+        //   resolver: 'moderation'
+        // }) as FormData;
+        // await axios.post(`${API_POST_UPLOAD}/${PROJECT_UID}`, fd, {
+        //   headers: { 'Content-Type': 'multipart/form-data' }
+        // });
         popupRouter.hide();
         await sleep(1);
         pageRouter.push('ending');
-        await sleep(3000);
+        await sleep(10000);
         pageRouter.push('intro');
       } catch (err) {
+        console.error(err)
         popupRouter.push('popup-error');
         await sleep(5000);
         popupRouter.hide();
       }
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pctx.clearRect(0, 0, canvas.width, canvas.height);
       textareaEl.value = '';
     }
   });

@@ -1,4 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Poor+Story&display=swap');
+@font-face {
+  font-family: 'Hyundai Sans Text';
+  font-weight: 900;
+  font-style: normal;
+  src: url("https://hashsnap-static.s3.ap-northeast-2.amazonaws.com/file/fonts/HyundaiSansTextKRBold.ttf");
+}
+@font-face {
+  font-family: 'Hyundai Sans Text';
+  font-weight: 700;
+  font-style: normal;
+  src: url("https://hashsnap-static.s3.ap-northeast-2.amazonaws.com/file/fonts/HyundaiSansTextKRMedium.ttf");
+}
+@font-face {
+  font-family: 'Hyundai Sans Text';
+  font-weight: 500;
+  font-style: normal;
+  src: url("https://hashsnap-static.s3.ap-northeast-2.amazonaws.com/file/fonts/HyundaiSansTextKRRegular.ttf");
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -13,37 +31,20 @@ body {
   background: #222831;
   font-size: 13px;
   color: #f8f8f8;
-  font-family: 'Poor Story', cursive;
+  font-family: 'Hyundai Sans Text';
 }
 input,
 select,
 button,
 textarea {
   display: block;
-  font-size: 13px;
-  text-align: center;
-  padding: 0.6rem 1.5rem;
-  border: 1px solid #393E46;
-  border-radius: 5px;
   outline: none;
-  background: #f8f8f8;
-  margin: 0.6rem auto;
-  font-family: 'Poor Story', cursive;
-}
-button {
-  background-color: #FFD369;
+  border: none;
+  padding: 0;
+  background: none;
 }
 data-hashsnap {
   display: none;
-}
-textarea {
-  width: 100%;
-  resize: none;
-  text-align: center;
-  font-size: 22px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  background: #f8f8f8;
 }
 page-route {
   width: 100%;
@@ -73,30 +74,72 @@ section {
   flex-direction: column;
 }
 h1 {
-  margin: 0.6rem auto;
+  margin: 2.5rem auto;
   font-weight: normal;
 }
-.desc {
-  font-size: 17px;
-  margin: 0.6rem auto;
-}
-
-#page-main input {
+.content {
   width: 450px;
-  display: block;
+  text-align: center;
+  background: none;
 }
-#page-main .canvas-container,
-#page-ending .canvas-container {
-  width: 450px;
-  position: relative;
-}
-#page-main canvas,
-#page-ending canvas {
-  width: 100%;
-  vertical-align: top;
+.typing {
+  padding: 40px;
   background: #fff;
-  border: 1px solid #393E46;
 }
-#page-ending .canvas-container {
-  border: 3px solid #FFD369;
+.canvas-container {
+  padding: 40px;
+  background: #fff;
+}
+canvas {
+  width: 100%;
+  height: auto;
+  position: relative;
+  vertical-align: top;
+}
+textarea {
+  width: 100%;
+  resize: none;
+  text-align: left;
+  font-size: 42px;
+  line-height: 50PX;
+  font-family: 'Hyundai Sans Text';
+  font-weight: 900;
+  border: none;
+  border-radius: 0;
+  overflow: hidden;
+  background: #fff;
+}
+textarea::placeholder {
+  font-size: 20px;
+}
+.count {
+  width: 100%;
+  text-align: right;
+  margin-top: 10px;
+  font-size: 15px;
+  font-family: 'Hyundai Sans Text';
+  font-weight: 500;
+}
+.count span {
+  color: #FFD369;
+  font-weight: 900;
+}
+.feedback {
+  color: #fff;
+  font-size: 17px;
+  margin-top: 5px;
+  text-align: left;
+  font-family: 'Hyundai Sans Text';
+  font-weight: 500;
+}
+button {
+  font-size: 21px;
+  width: 220px;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 5px;
+  margin-top: 40px;
+  font-family: 'Hyundai Sans Text';
+  font-weight: 700;
+  background: #FFD369;
 }

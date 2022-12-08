@@ -5,6 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="./vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
+    <link rel="stylesheet" href="./src/style.css">
   </head>
   <body>
     <data-hashsnap project-uid="22ba0649-d4c7-4fda-8ec4-243f8cf409b9" max-image-width="" accept="image/*"></data-hashsnap>
@@ -16,24 +17,27 @@
     <page-route name="main" id="page-main">
       <section>
         <h1>하고 싶은 메시지를 남겨주세요 !</h1>
-        <div class="canvas-container">
-          <canvas id="canvas"></canvas>
-          <textarea
-            id="message"
-            rows="3"
-            placeholder="여기에 입력해 주세요 : )"
-          ></textarea>
-          <input type="text" id="first-line" maxlength="10" placeholder="첫 줄 최대 10자" />
-          <input type="text" id="second-line" maxlength="10" placeholder="두번째 줄 최대 10자" />
+        <div class="content">
+          <div class="typing">
+            <textarea
+              id="message"
+              rows="2"
+              placeholder="여기에 입력해주세요 (2줄 / 20자 내외)"
+            ></textarea>
+          </div>
+          <div class="count"><span id="length">0</span>/20</div>
+          <div class="feedback" style="visibility: hidden"></div>
+          <button id="complete-btn">남기기</button>
         </div>
-        <button id="complete-btn">남기기</button>
       </section>
     </page-route>
     <page-route name="ending" id="page-ending">
       <section>
-        <h1>참여해주셔서 감사합니다.</h1>
-        <div class="canvas-container">
-          <canvas id="canvas-preview"></canvas>
+        <div class="content">
+          <h1>참여해주셔서 감사합니다.</h1>
+          <div class="canvas-container">
+            <canvas id="preview"></canvas>
+          </div>
         </div>
       </section>
     </page-route>

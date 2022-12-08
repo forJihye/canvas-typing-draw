@@ -12,11 +12,10 @@ const canvasTxt = {
   font: 'Arial',
   lineHeight: 90,
   justify: false,
-  maxLine: 2,
   /**
    *
    * @param {CanvasRenderingContext2D} ctx
-   * @param {string} mytext
+   * @param {string} text
    * @param {number} x
    * @param {number} y
    * @param {number} width
@@ -24,7 +23,7 @@ const canvasTxt = {
    */
   drawText: function (
     ctx: CanvasRenderingContext2D,
-    mytext: string,
+    text: string,
     x: number,
     y: number,
     width: number,
@@ -61,14 +60,14 @@ const canvasTxt = {
 
     //added one-line only auto linebreak feature
     let textarray: any[] = []
-    let temptextarray = mytext.split('\n')
+    let temptextarray = text.split('\n')
 
     const spaceWidth = this.justify ? ctx.measureText(SPACE).width : 0
     
     temptextarray.forEach((txtt) => {
       let textwidth = ctx.measureText(txtt).width
       if (textwidth <= width) {
-        textarray.length < this.maxLine && textarray.push(txtt)
+        textarray.push(txtt)
       } else { // 입력 텍스트가 전체 width 보다 넘쳐날 때
         let temptext = txtt
         let linelen = width
@@ -104,10 +103,10 @@ const canvasTxt = {
 
           temptext = temptext.substring(textlen)
           textwidth = ctx.measureText(temptext).width
-          textarray.length < this.maxLine && textarray.push(texttoprint)
+          textarray.push(texttoprint)
         }
         if (textwidth > 0) {
-          textarray.length < this.maxLine && textarray.push(temptext)
+          textarray.push(temptext)
           
         }
       }
@@ -115,7 +114,7 @@ const canvasTxt = {
     })
     const charHeight = this.lineHeight
       ? this.lineHeight
-      : this.getTextHeight(ctx, mytext, style) //close approximation of height with width
+      : this.getTextHeight(ctx, text, style) //close approximation of height with width
     const vheight = charHeight * (textarray.length - 1)
     const negoffset = vheight / 2
 
