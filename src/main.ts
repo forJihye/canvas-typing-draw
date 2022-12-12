@@ -2,40 +2,28 @@
 import Router from './router';
 import {singleListener} from './single-listener';
 import canvasTxt from './canvas-txt';
-// import axios from 'axios';
+import axios from 'axios';
 const $$ = document.querySelectorAll.bind(document);
 const $ = document.querySelector.bind(document);
-// const rest = (index: number, total: number) => (total + index % total) % total;
+
 const sleep = (ms: number) => new Promise(res => setTimeout(res, ms));
-// const canvas2Blob = (canvas: HTMLCanvasElement, options: {type: string; quality: number}) => new Promise(res => canvas.toBlob(res, options.type, options.quality));
-// const blob2File = (blob: Blob, options: {name: string; type: string; }) =>  new Promise(res => res(new File([blob], options.name, {type: options.type, lastModified: Date.now()})));
-// const file2FormData = (params: {[key: string]: any}) => new Promise(res => {
-//   const fd = new FormData();
-//   for (const name in params) fd.append(name, params[name])
-//   res(fd);
-// });
-// for (let i = 0; i < lines.length; i++) {
-//   count += lines[i].length;
-//   if (count > 20) {
-//     const slice = 20 - (count - lines[i].length);
-//     lines[i] = lines[i].substring(0, slice);
-//     console.log(lines[i])
-//   }
-// }
-// target.value = lines.slice(0, 2).join('\n')
+const canvas2Blob = (canvas: HTMLCanvasElement, options: {type: string; quality: number}) => new Promise(res => canvas.toBlob(res, options.type, options.quality));
+const blob2File = (blob: Blob, options: {name: string; type: string; }) =>  new Promise(res => res(new File([blob], options.name, {type: options.type, lastModified: Date.now()})));
+const file2FormData = (params: {[key: string]: any}) => new Promise(res => {
+  const fd = new FormData();
+  for (const name in params) fd.append(name, params[name])
+  res(fd);
+});
 const textareaEl = $('#message') as HTMLTextAreaElement;
 const completeBtn = $('#complete-btn') as HTMLButtonElement;
 const feedback = $('.feedback') as HTMLDivElement
 const messageCount = $('#length') as HTMLSpanElement;
-
 const START_ROUTE = 'intro';
 
 const main = async () => { try {
-  // let PROJECT_UID = '';
-  // const API_POST_UPLOAD = 'https://api.hashsnap.net/posts/upload';
-  // const dataSetting = $('data-hashsnap') as HTMLElement;
-  // PROJECT_UID = dataSetting.getAttribute('project-uid') as string;
-  // dataSetting.parentElement?.removeChild(dataSetting);
+  const API_POST_UPLOAD = 'https://api.hashsnap.net/posts/upload';
+  const PROJECT_UID = "22ba0649-d4c7-4fda-8ec4-243f8cf409b9";
+  
   messageCount.innerText = '0';
   let flag = false;
   const handlerInput = (ev: any) => {
@@ -63,12 +51,6 @@ const main = async () => { try {
     const length = lines.join('').length;
     messageCount.innerText = String(length)
   }
-  // textareaEl.value = '여기에 입력해 주세요.\n(2줄 / 20자 내외)';d
-  // textareaEl.addEventListener('focus', (ev ) => {
-  //   ev.preventDefault();
-  //   const target = ev.target as HTMLTextAreaElement;
-  //   target.value = '';
-  // });
   textareaEl.addEventListener('input', handlerInput);
 
   const config = {
@@ -114,15 +96,17 @@ const main = async () => { try {
         pctx.fillStyle = '#fff';
         pctx.fillRect(0, 0, width, height);
         pctx.drawImage(canvas, 0, 0)
-        // const blob = await canvas2Blob(canvas, {type: 'image/png', quality: 1}) as Blob;
-        // const file = await blob2File(blob, {name: 'photo.png', type: 'image/png'}) as File;
-        // const fd = await file2FormData({
-        //   image: file,
-        //   resolver: 'moderation'
-        // }) as FormData;
-        // await axios.post(`${API_POST_UPLOAD}/${PROJECT_UID}`, fd, {
-        //   headers: { 'Content-Type': 'multipart/form-data' }
-        // });
+        
+        const blob = await canvas2Blob(canvas, {type: 'image/png', quality: 1}) as Blob;
+        const file = await blob2File(blob, {name: 'photo.png', type: 'image/png'}) as File;
+        const fd = await file2FormData({
+          image: file,
+          resolver: 'moderation'
+        }) as FormData;
+        await axios.post(`${API_POST_UPLOAD}/${PROJECT_UID}`, fd, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+
         popupRouter.hide();
         await sleep(1);
         pageRouter.push('ending');
